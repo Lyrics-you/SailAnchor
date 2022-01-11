@@ -3,13 +3,14 @@
 # * Author: Leyuan Jia
 # * Email: Leyuan.Jia@outlook.com
 # * Date: 2022, Jua. 11th
-# * Copyright: MIT.
+# * Copyright: No copyright. You can use this code for anything with no warranty.
 
 # 信息
 SHELL_NAME=${SHELL_NAME:-"SailAnchor.sh"}
 LOG_FILE=${LOG_FILE:-"anchors.log"}
 
 # 配置
+# 日期格式化
 SAILOR_DATE_FORMAT=${SAILOR_DATE_FORMAT:-'%Y/%m/%d %H:%M:%S'}
 # 0: debug, 1: info, 2: notice, 3: warning, 4: error
 # 小于SAILOR_LEVEL的不再显示
@@ -17,11 +18,11 @@ SAILOR_LEVEL=${SAILOR_LEVEL:-1}
 if [ "${SAILOR_LEVELS}" = "" ]; then
     SAILOR_LEVELS=("DEBUG" "INFO" "NOTICE" "WARNING" "ERROR")
 fi
-# 小于这个等级输出到stderr，否在输出到文件
+# 大于SAILOR_STD_ERROR_LEVEL的不再显示
 SAILOR_STD_ERROR_LEVEL=${SAILOR_STD_ERROR_LEVEL:-4}
-# Italicized
+# 斜体
 SAILOR_DEBUG_COLOR=${SAILOR_INFO_COLOR:-"3"}
-# Default output color
+# 终端默认颜色
 SAILOR_INFO_COLOR=${SAILOR_INFO_COLOR:-""}
 # Cyan
 SAILOR_NOTICE_COLOR=${SAILOR_INFO_COLOR:-"36"}
@@ -34,24 +35,28 @@ SAILOR_ERROR_COLOR=${SAILOR_INFO_COLOR:-"31"}
 # always-> Always put color.
 SAILOR_COLOR=${SAILOR_COLOR:-auto}
 SAILOR_COLORS=("$SAILOR_DEBUG_COLOR" "$SAILOR_INFO_COLOR" "$SAILOR_NOTICE_COLOR" "$SAILOR_WARNING_COLOR" "$SAILOR_ERROR_COLOR")
+# 错误返回码
+SAILOR_ERROR_RETURN_CODE=${SAILOR_ERROR_RETURN_CODE:-100}
 
 # 开关
+# 是否显示时间
 SAILOR_SHOW_TIME=${SAILOR_SHOW_TIME:-1}
+# 是否显示位置
 SAILOR_SHOW_FILE=${SAILOR_SHOW_FILE:-1}
+# 是否显示等级
 SAILOR_SHOW_LEVEL=${SAILOR_SHOW_LEVEL:-1}
-# Error reutrn code
-SAILOR_ERROR_RETURN_CODE=${SAILOR_ERROR_RETURN_CODE:-100}
+# 是否显示错误TraceBack
 SAILOR_ERROR_TRACE=${SAILOR_ERROR_TRACE:-1}
 
 # 全局执行结果标志位，有一步出错后日志不会继续输出
-# 父子Shell进程通信使用与该文件同目录下的anc文件座位标识
+# 父子Shell进程通信使用与该文件同目录下的anc文件标识
 export GLOBAL_FAIL_ANCHOR="$(
     cd $(dirname ${BASH_SOURCE[0]})
     pwd
 )/iceberg.anc"
 
 # 清理标志位函数：在加载logForShell函数后，务必在主入口脚本所有语句执行前调用
-function weighAnchor() {
+function _weigh_anchor() {
     if [ -f ${GLOBAL_FAIL_ANCHOR} ]; then
         rm -f ${GLOBAL_FAIL_ANCHOR}
     fi
@@ -298,9 +303,9 @@ function step() {
     echo ""
 }
 
-# beforeSail() 脚本执行前函数：在关键脚本开始时执行，调用时需要传入执行脚本的所有参数
-# 如： beforeSail $@
-function beforeSail() {
+# before_sail() 脚本执行前函数：在关键脚本开始时执行，调用时需要传入执行脚本的所有参数
+# 如： before_sail $@
+function before_sail() {
     srouce_filename=$(caller)
     echo ""
     blow "$(horn "++  ${srouce_filename##*/}  BEGIN  ++")"
@@ -308,16 +313,16 @@ function beforeSail() {
     echo ""
 }
 
-# afterSail() 脚本结束函数：在脚本结束时执行
-function afterSail() {
+# after_sail() 脚本结束函数：在脚本结束时执行
+function after_sail() {
     srouce_filename=$(caller)
     echo ""
     blow "$(horn "##  ${srouce_filename##*/}  FINISH ##")"
 }
 
-# reportFailure() 错误报告函数：在某一步结束后判断执行结果，若出错则调用该函数
+# report_capsize() 错误报告函数：在某一步结束后判断执行结果，若出错则调用该函数
 # 该函数会改变执行结果标志位，阻止出错后日志继续输出
-function reportFailure() {
+function report_capsize() {
     touch ${GLOBAL_FAIL_ANCHOR}
     call ""
     call "**  line $(caller) REPORTED FAILURE  **"
@@ -335,11 +340,13 @@ function reportFailure() {
     done
 }
 
-# reportSuccess() 成功报告函数：在关键步骤结束后判断执行结S果，成功则调用该函数
+# report_arrival() 成功报告函数：在关键步骤结束后判断执行结S果，成功则调用该函数
 # 一般步骤不用调用该函数输出
-# 如： reportSuccess "Init and check related params"
-function reportSuccess() {
+# 如： report_arrival "Init and check related params"
+function report_arrival() {
     call ""
     blow "**  $1 SUCCESS  **"
     call ""
 }
+
+$(_weigh_anchor)
