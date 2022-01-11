@@ -55,20 +55,20 @@ export GLOBAL_FAIL_ANCHOR="$(
     pwd
 )/iceberg.anc"
 
-# 清理标志位函数：在加载logForShell函数后，务必在主入口脚本所有语句执行前调用
+# _weigh_anchor()：清除iceberg锚，否在会阻止blow，默认执行
 function _weigh_anchor() {
     if [ -f ${GLOBAL_FAIL_ANCHOR} ]; then
         rm -f ${GLOBAL_FAIL_ANCHOR}
     fi
 }
 
-#  日志时间 [%Y/%m/%d %H:%M:%S]
+#  _sailor_time()：获取日志时间 [%Y/%m/%d %H:%M:%S]
 function _sailor_time() {
     [ "${SAILOR_SHOW_TIME}" -ne 1 ] && return
     printf "[$(date +"${SAILOR_DATE_FORMAT}")]"
 }
 
-# 日志位置 ［shell:line]
+# _sailor_site()：获取日志位置 ［shell:line]
 function _sailor_site() {
     [ "${SAILOR_SHOW_FILE}" -ne 1 ] && return
     local i=0
@@ -85,7 +85,7 @@ function _sailor_site() {
     fi
 }
 
-# 日志等级 0: debug, 1: info, 2: notice, 3: warning, 4: error
+# _sailor_level()：获取日志等级 0: debug, 1: info, 2: notice, 3: warning, 4: error
 function _sailor_level() {
     [ "${SAILOR_SHOW_LEVEL}" -ne 1 ] && return
     if [ $# -eq 1 ]; then
@@ -97,6 +97,7 @@ function _sailor_level() {
     printf "[${SAILOR_LEVELS[$level]}]"
 }
 
+# _get_level()：获取日志等级，用于控制日志输出
 function _get_level() {
     if [ $# -eq 0 ]; then
         local level=1
@@ -118,21 +119,22 @@ function _get_level() {
     printf $level
 }
 
+# horm(): 标识信息
 function horn() {
     printf "$(_sailor_time)[$$]$*"
 }
 
-# diary() 只记录不输出
+# diary(): 输出到文本，不到终端
 function diary() {
     echo "$@" 1>>${LOG_FILE}
 }
 
-# call() 不包含任何标签输出
+# call(): 输出到文本以及终端
 function call() {
     echo "$@" | tee -a ${LOG_FILE}
 }
 
-# blow() 包含信息输出
+# blow(): 吹起号角：结合horn使用
 function blow() {
     if [ ! -f ${GLOBAL_FAIL_ANCHOR} ]; then
         if [ $# -eq 2 ]; then
@@ -146,6 +148,7 @@ function blow() {
 }
 
 _SAILOR_ANCHOR=0
+# _sailor(): 丢下锚：定位日志问题
 function _sailor() {
     ((_SAILOR_ANCHOR++))
     local anchor=${_SAILOR_ANCHOR}
@@ -179,35 +182,42 @@ function _sailor() {
     fi
 }
 
+# debug(): 输出DEBUG信息
 function debug() {
     ((_SAILOR_ANCHOR++))
     _sailor 0 "$*"
 }
+# information(): 输出INFO信息
 function information() {
     ((_SAILOR_ANCHOR++))
     _sailor 1 "$*"
 }
+# info(): 同information()
 function info() {
     ((_SAILOR_ANCHOR++))
     information "$*"
 }
+# notification(): 输出NOTICE信息
 function notification() {
     ((_SAILOR_ANCHOR++))
     _sailor 2 "$*"
 }
+# notice(): 同notification()
 function notice() {
     ((_SAILOR_ANCHOR++))
     notification "$*"
 }
+# warning(): 输出WARNING信息
 function warning() {
     ((_SAILOR_ANCHOR++))
     _sailor 3 "$*"
 }
+# warn(): 同warning()
 function warn() {
     ((_SAILOR_ANCHOR++))
     warning "$*"
 }
-
+# error()：输出ERROR信息，默认带Trace Back Stack
 function error() {
     ((_SAILOR_ANCHOR++))
     if [ "$SAILOR_ERROR_TRACE" -eq 1 ]; then
@@ -282,12 +292,13 @@ function error() {
     _sailor 4 "$*"
     return "${SAILOR_ERROR_RETURN_CODE}"
 }
+# iceberg(): 同error()
 function iceberg() {
     ((_SAILOR_ANCHOR++))
     error "$*"
 }
 
-# welcome() 欢迎使用
+# welcome(): 欢迎使用
 function welcome() {
     call "*********************************"
     call "* Welcome to use ShellLogAnchor *"
@@ -314,6 +325,7 @@ function before_sail() {
 }
 
 # after_sail() 脚本结束函数：在脚本结束时执行
+# 如： after_sail
 function after_sail() {
     srouce_filename=$(caller)
     echo ""
@@ -340,13 +352,13 @@ function report_capsize() {
     done
 }
 
-# report_arrival() 成功报告函数：在关键步骤结束后判断执行结S果，成功则调用该函数
+# report_arrival() 成功报告函数：在关键步骤结束后判断执行结果，成功则调用该函数
 # 一般步骤不用调用该函数输出
 # 如： report_arrival "Init and check related params"
 function report_arrival() {
-    call ""
+    echo ""
     blow "**  $1 SUCCESS  **"
-    call ""
+    echo ""
 }
 
 $(_weigh_anchor)
