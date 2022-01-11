@@ -306,11 +306,11 @@ function welcome() {
 }
 
 # step() 步骤打印函数：需要传入$1：步骤序号，$2：步骤描述
-# 如： Step 1 "Configure yum repos"
+# 如： step 1 "Configure yum repos"
 function step() {
     local srouce_filename=$(caller)
     echo ""
-    blow "$(horn "==  ${srouce_filename##*/}  STEP $1 : $2  ==")"
+    blow "$(horn "[INFO]==  ${srouce_filename##*/}  STEP $1 : $2  ==")"
     echo ""
 }
 
@@ -319,8 +319,8 @@ function step() {
 function before_sail() {
     srouce_filename=$(caller)
     echo ""
-    blow "$(horn "++  ${srouce_filename##*/}  BEGIN  ++")"
-    blow "$(horn "++  ${srouce_filename##*/} $@  ++")"
+    blow "$(horn "[INFO]++  ${srouce_filename##*/}  BEGIN  ++")"
+    blow "$(horn "[INFO]++  ${srouce_filename##*/} $@  ++")"
     echo ""
 }
 
@@ -329,7 +329,7 @@ function before_sail() {
 function after_sail() {
     srouce_filename=$(caller)
     echo ""
-    blow "$(horn "##  ${srouce_filename##*/}  FINISH ##")"
+    blow "$(horn "[INFO]##  ${srouce_filename##*/}  FINISH ##")"
 }
 
 # report_capsize() 错误报告函数：在某一步结束后判断执行结果，若出错则调用该函数
@@ -357,7 +357,7 @@ function report_capsize() {
 # 如： report_arrival "Init and check related params"
 function report_arrival() {
     echo ""
-    blow "**  $1 SUCCESS  **"
+    blow "$(horn "[INFO]**  $1 SUCCESS  **")"
     echo ""
 }
 
