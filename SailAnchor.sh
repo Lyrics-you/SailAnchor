@@ -41,6 +41,8 @@ SAILOR_ERROR_RETURN_CODE=${SAILOR_ERROR_RETURN_CODE:-100}
 # 开关
 # 是否显示时间
 SAILOR_SHOW_TIME=${SAILOR_SHOW_TIME:-1}
+# 是否显示PID : 默认不显示 同一个PID
+SAILOR_SHOW_PID=${SAILOR_SHOW_PID:-0}
 # 是否显示位置
 SAILOR_SHOW_FILE=${SAILOR_SHOW_FILE:-1}
 # 是否显示等级
@@ -85,6 +87,13 @@ function _sailor_site() {
     fi
 }
 
+function _sailor_pid() {
+    [ "${SAILOR_SHOW_PID}" -ne 1 ] && return
+    if [ $# -eq 1]; then
+        printf "[$$]"
+    fi
+}
+
 # _sailor_level()：获取日志等级 0: debug, 1: info, 2: notice, 3: warning, 4: error
 function _sailor_level() {
     [ "${SAILOR_SHOW_LEVEL}" -ne 1 ] && return
@@ -121,12 +130,17 @@ function _get_level() {
 
 # horm(): 标识信息
 function horn() {
-    printf "$(_sailor_time)[$$]$*"
+    printf "$(_sailor_time)$(_sailor_pid)$*"
 }
 
 # diary(): 输出到文本，不到终端
 function diary() {
     echo "$@" 1>>${LOG_FILE}
+}
+
+# clear_diary(): 清除日志信息
+function clear_diary() {
+    echo >${LOG_FILE}
 }
 
 # call(): 输出到文本以及终端
@@ -305,39 +319,34 @@ function welcome() {
     call "*********************************"
 }
 
-# step() 步骤打印函数：需要传入$1：步骤序号，$2：步骤描述
+# step(): 步骤打印函数：需要传入$1：步骤序号，$2：步骤描述
 # 如： step 1 "Configure yum repos"
 function step() {
-    local srouce_filename=$(caller)
-    echo ""
-    blow "$(horn "[INFO]==  ${srouce_filename##*/}  STEP $1 : $2  ==")"
-    echo ""
+    local sail_site=$(caller)
+    blow "$(horn "[REPORT][STEP] ==  ${sail_site##*/}  STEP $1 : $2  ==")"
 }
 
-# before_sail() 脚本执行前函数：在关键脚本开始时执行，调用时需要传入执行脚本的所有参数
+# before_sail(): 脚本执行前函数：在关键脚本开始时执行，调用时需要传入执行脚本的所有参数
 # 如： before_sail $@
 function before_sail() {
-    srouce_filename=$(caller)
-    echo ""
-    blow "$(horn "[INFO]++  ${srouce_filename##*/}  BEGIN  ++")"
-    blow "$(horn "[INFO]++  ${srouce_filename##*/} $@  ++")"
-    echo ""
+    local sail_site=$(caller)
+    blow "$(horn "[REPORT][BEGIN] ++  ${sail_site##*/}  BEGIN  ++")"
+    # blow "$(horn "[REPORT][BEGIN] ++  ${sail_site##*/} $@  ++")"
 }
 
-# after_sail() 脚本结束函数：在脚本结束时执行
+# after_sail(): 脚本结束函数：在脚本结束时执行
 # 如： after_sail
 function after_sail() {
-    srouce_filename=$(caller)
-    echo ""
-    blow "$(horn "[INFO]##  ${srouce_filename##*/}  FINISH ##")"
+    local sail_site=$(caller)
+    blow "$(horn "[REPORT][FINISH] ##  ${sail_site##*/}  FINISH ##")"
 }
 
-# report_capsize() 错误报告函数：在某一步结束后判断执行结果，若出错则调用该函数
+# report_capsize(): 错误报告函数：在某一步结束后判断执行结果，若出错则调用该函数
 # 该函数会改变执行结果标志位，阻止出错后日志继续输出
 function report_capsize() {
     touch ${GLOBAL_FAIL_ANCHOR}
     call ""
-    call "**  line $(caller) REPORTED FAILURE  **"
+    call "$(horn "[REPORT][FAILURE] **  line $(caller) REPORTED FAILURE  **")"
     call ""
     # 通过循环判断caller返回，如果不为空则持续打印，最多打印5行
     call "    CALLER LIST    "
@@ -352,13 +361,12 @@ function report_capsize() {
     done
 }
 
-# report_arrival() 成功报告函数：在关键步骤结束后判断执行结果，成功则调用该函数
+# report_arrival(): 成功报告函数：在关键步骤结束后判断执行结果，成功则调用该函数
 # 一般步骤不用调用该函数输出
 # 如： report_arrival "Init and check related params"
 function report_arrival() {
-    echo ""
-    blow "$(horn "[INFO]**  $1 SUCCESS  **")"
-    echo ""
+    blow "$(horn "[REPORT][SUCCESS] ##  $1 SUCCESS  ##")"
 }
 
+# 默认开始调用时清除iceberg锚
 $(_weigh_anchor)

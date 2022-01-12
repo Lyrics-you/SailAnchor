@@ -1,7 +1,21 @@
-# SailAnchor
-This is a log collector for shell scripts, like the anchor of the sail (shell).
+# ⛵SailAnchor
+This is a log collector for shell scripts, like the ⚓anchor of the ⛵ sail (shell).
 
-## 前言
+## ⛵展示
+
+MobaXterm
+
+<img src="https://image-taragrade.oss-cn-hangzhou.aliyuncs.com/imagehub/image-20220112100743969.png" alt="MobaXterm" style="zoom:50%;" />
+
+Xshell
+
+<img src="https://image-taragrade.oss-cn-hangzhou.aliyuncs.com/imagehub/image-20220112100916382.png" alt="xshell" style="zoom:50%;" />
+
+Windows Terminal
+
+<img src="https://image-taragrade.oss-cn-hangzhou.aliyuncs.com/imagehub/image-20220112101312655.png" alt="image-20220112101312655" style="zoom:50%;" />
+
+## ⛵前言
 
 这个脚本是日志收集器，主要用来收集自己写的一些shell脚本中产生的日志，以便于快于定位和解决问题。
 
@@ -9,15 +23,15 @@ This is a log collector for shell scripts, like the anchor of the sail (shell).
 
 本脚本也参考了一些其他优秀脚本的思路，修改后更加贴合自己的要求。
 
-## 特点
+## ⛵特点
 
 - 可以使用（debug/info/notice/error/warn)标注不同的信息。并且可以配置不同的颜色，以便更快区别信息。
 - 可以定位错误的Trace Stack。
 - 设置日志输出的等级。（屏蔽和限制等级不进行输出）。
 - 可以同时输出到终端与写入文件。
-- 日志输出错误，可以进行`reportFailure`后续不再继续输出。
+- 日志输出错误，可以进行`report_capsize`后续不再继续输出。
 
-## 使用
+## ⛵使用
 
 在你的脚本文件开头，加入`source ./SailAnchor.sh`
 
@@ -43,9 +57,9 @@ fi
 
 ![shadow-zoom](https://image-taragrade.oss-cn-hangzhou.aliyuncs.com/imagehub/image-20220111161716073.png)
 
-## 配置
+## ⚓配置
 
-### level
+### ⚓level
 
 |  LEVEL  | Value |        Functions         |
 | :-----: | :---: | :----------------------: |
@@ -57,7 +71,7 @@ fi
 
 
 
-### 全局变量
+### ⚓全局变量
 
 |      Variable Name       |            Description             |                   Default                   |
 | :----------------------: | :--------------------------------: | :-----------------------------------------: |
@@ -74,13 +88,14 @@ fi
 |     SAILOR_SHOW_TIME     |            是否显示时间            |                      1                      |
 |     SAILOR_SHOW_FILE     |           是否显示问位置           |                      1                      |
 |    SAILOR_SHOW_LEVEL     |            是否显示等级            |                      1                      |
+|     SAILOR_SHOW_PID      |            是否显示PID             |               0（默认不显示）               |
 | SAILOR_ERROR_RETURN_CODE |      `iceberg`/`error`返回码       |                     100                     |
 |    SAILOR_ERROR_TRACE    | 是否显示错误信息 `iceberg`/`error` |                      1                      |
 |    GLOBAL_FAIL_ANCHOR    |         全局执行结果标志位         |                ./iceberg.anc                |
 |        SHELL_NAME        |           shell脚本名称            |                SailAnchor.sh                |
 |       ANCHOR_FILE        |              日志名称              |                 achors.log                  |
 
-### 颜色
+### ⚓颜色
 
 关于颜色，可以参考标准定义[Standard ECMA-48](http://www.ecma-international.org/publications/standards/Ecma-048.htm) (p61, p62).
 
@@ -111,9 +126,9 @@ Normal are:
 SAILOR_ERROR_COLOR="37;41"
 ```
 
-## 架构
+## ⚓架构
 
-![sail_struct](https://image-taragrade.oss-cn-hangzhou.aliyuncs.com/imagehub/sail_struct.jpg)
+![strcut](https://image-taragrade.oss-cn-hangzhou.aliyuncs.com/imagehub/strcut.jpg)
 
 
 
@@ -126,6 +141,7 @@ SAILOR_ERROR_COLOR="37;41"
 |    _weigh_anchor    |             清除iceberg锚             |
 |        horn         |               标识信息                |
 |        diary        |         输出到文本，不到终端          |
+|     clear_diary     |               清除日志                |
 |        call         |          输出到文本以及终端           |
 |        blow         |        吹起号角：结合horn使用         |
 |       _sailor       |         丢下锚：定位日志问题          |
@@ -135,15 +151,18 @@ SAILOR_ERROR_COLOR="37;41"
 |    warn,warning     |            输出WARNING信息            |
 |    error,iceberg    | 输出ERROR信息，默认带Trace Back Stack |
 |       welcome       |          使用脚本的欢迎信息           |
-|        step         |             输出步骤信息              |
-|     before_sail     |            脚本执行前信息             |
-|     after_sail      |            脚本执行后信息             |
-|   report_capsize    |             报告错误信息              |
-|   report_arrival    |             报告成功信息              |
+|        step         |         [report]输出步骤信息          |
+|     before_sail     |        [report]脚本执行前信息         |
+|     after_sail      |        [report]脚本执行后信息         |
+|   report_capsize    |         [report]报告错误信息          |
+|   report_arrival    |         [report]报告成功信息          |
 
-## 注意
+## ⚓注意
 
-保证SHELL_NAME与实际脚本的名称一致。
+- 保证SHELL_NAME与实际脚本的名称一致。
+- 尽量使用`debug`,`info`,`notice`,`warn`,`error`等具有信息标签的日志输出函数，
+- 而`step`,`before_sail`,`after_sail`,`report_capsize`,`report_arrival`等报告信息函数可以在关键信息报告或者测试中使用！
+- 使用`report_capsize`会屏蔽后续错误日志的输出！
+- 实际运行中可能存在一些问题，后续有待调整!
 
-实际运行中可能存在一些问题，后续有待调整!
 
