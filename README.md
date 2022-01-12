@@ -160,9 +160,9 @@ SAILOR_ERROR_COLOR="37;41"
 ## ⚓注意
 
 - 保证SHELL_NAME与实际脚本的名称一致。
-- 尽量使用`debug`,`info`,`notice`,`warn`,`error`等具有信息标签的日志输出函数，
-- 而`step`,`before_sail`,`after_sail`,`report_capsize`,`report_arrival`等报告信息函数可以在关键信息报告或者测试中使用！
+- 脚本尽量不要给予`+x`权限,通过`source`方式去加载。
+- 尽量使用`debug`,`info`,`notice`,`warn`,`error`等具有信息标签的日志输出函数。日志格式统一。
+- 而`step`,`before_sail`,`after_sail`,`report_capsize`,`report_arrival`等报告信息函数可以在关键信息报告或者测试中使用！会破坏一定日志格式。
 - 使用`report_capsize`会屏蔽后续错误日志的输出！
 - 实际运行中可能存在一些问题，后续有待调整!
-
 
