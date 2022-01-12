@@ -10,8 +10,9 @@ SHELL_NAME=${SHELL_NAME:-"SailAnchor.sh"}
 LOG_FILE=${LOG_FILE:-"anchors.log"}
 SAILOR_VERSION="v0.4.0"
 
-
 # 配置
+# 是否欢迎
+SAILOR_SHOW_WELCOME=${SAILOR_SHOW_WELCOME:-1}
 # 日期格式化
 SAILOR_DATE_FORMAT=${SAILOR_DATE_FORMAT:-'%Y/%m/%d %H:%M:%S'}
 # 0: debug, 1: info, 2: notice, 3: warning, 4: error
@@ -338,7 +339,7 @@ function welcome() {
     call "* Welcome to use ShellLogAnchor *"
     call "*    ${SHELL_NAME} : ${SAILOR_VERSION}     *"
     call "*********************************"
-    
+
 }
 
 # step(): 步骤打印函数：需要传入$1：步骤序号，$2：步骤描述
@@ -392,3 +393,6 @@ function report_arrival() {
 
 # 默认开始调用时清除iceberg锚
 $(_weigh_anchor)
+if [ "${SAILOR_SHOW_WELCOME}" -eq 1 ]; then
+    welcome
+fi
