@@ -2,12 +2,14 @@
 # * FileName: Shell Log Anchor
 # * Author: Leyuan Jia
 # * Email: Leyuan.Jia@outlook.com
-# * Date: 2022, Jua. 11th
+# * Date: 2022, Jua. 12th
 # * Copyright: No copyright. You can use this code for anything with no warranty.
 
 # 信息
 SHELL_NAME=${SHELL_NAME:-"SailAnchor.sh"}
 LOG_FILE=${LOG_FILE:-"anchors.log"}
+SAILOR_VERSION="v0.4.0"
+
 
 # 配置
 # 日期格式化
@@ -334,7 +336,9 @@ function wave() {
 function welcome() {
     call "*********************************"
     call "* Welcome to use ShellLogAnchor *"
+    call "*    ${SHELL_NAME} : ${SAILOR_VERSION}     *"
     call "*********************************"
+    
 }
 
 # step(): 步骤打印函数：需要传入$1：步骤序号，$2：步骤描述
