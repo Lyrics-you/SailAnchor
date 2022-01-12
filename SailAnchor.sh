@@ -312,6 +312,17 @@ function iceberg() {
     error "$*"
 }
 
+function wave() {
+    [ "$#" -eq 0 ] && return
+    ((_SAILOR_ANCHOR++))
+    # local msg="$(horn "$(_sailor_site "${anchor}")$(_sailor_level "${level}")") $*"
+    if [ $1 -eq 0 ]; then
+        info "$2 SUCCESS"
+    else
+        error "$2" FAILURE
+    fi
+}
+
 # welcome(): 欢迎使用
 function welcome() {
     call "*********************************"
