@@ -108,6 +108,7 @@ wave $? your_command
 |    GLOBAL_FAIL_ANCHOR    |         全局执行结果标志位         |                ./iceberg.anc                |
 |        SHELL_NAME        |           shell脚本名称            |                SailAnchor.sh                |
 |       ANCHOR_FILE        |              日志名称              |                 achors.log                  |
+|      SAILOR_VSRSION      |              版本信息              |                   v0.4.1                    |
 
 ### ⚓颜色
 
@@ -142,7 +143,7 @@ SAILOR_ERROR_COLOR="37;41"
 
 ## ⚓架构
 
-![strcut](https://image-taragrade.oss-cn-hangzhou.aliyuncs.com/imagehub/strcut.jpg)
+![struct](https://image-taragrade.oss-cn-hangzhou.aliyuncs.com/imagehub/struct.jpg)
 
 
 
@@ -165,7 +166,7 @@ SAILOR_ERROR_COLOR="37;41"
 |    warn,warning     |                    输出WARNING信息                     |
 |    error,iceberg    |         输出ERROR信息，默认带Trace Back Stack          |
 |        wave         | 快速错误判断的函数，第一参数必须是$?，第二个参数为操作 |
-|       welcome       |                   使用脚本的欢迎信息                   |
+|       welcome       |            使用脚本的欢迎信息，包含版本信息            |
 |        step         |                  [report]输出步骤信息                  |
 |     before_sail     |                 [report]脚本执行前信息                 |
 |     after_sail      |                 [report]脚本执行后信息                 |
