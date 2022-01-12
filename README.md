@@ -57,6 +57,20 @@ fi
 
 ![shadow-zoom](https://image-taragrade.oss-cn-hangzhou.aliyuncs.com/imagehub/image-20220111161716073.png)
 
+或者使用快速判断函数`wave()`
+
+```shell
+#!/bin/bash
+
+source ./SailAnchor.sh
+
+notice Sailing
+your_command
+wave $? your_command
+```
+
+![shadow-zoom](https://image-taragrade.oss-cn-hangzhou.aliyuncs.com/imagehub/image-20220112143620984.png)
+
 ## ⚓配置
 
 ### ⚓level
@@ -132,30 +146,31 @@ SAILOR_ERROR_COLOR="37;41"
 
 
 
-|    Function Name    |              Description              |
-| :-----------------: | :-----------------------------------: |
-|    _sailor_time     |               定位时间                |
-|    _sailor_site     |               定位位置                |
-|    _sailor_level    |               定位等级                |
-|     _get_level      |               获取等级                |
-|    _weigh_anchor    |             清除iceberg锚             |
-|        horn         |               标识信息                |
-|        diary        |         输出到文本，不到终端          |
-|     clear_diary     |               清除日志                |
-|        call         |          输出到文本以及终端           |
-|        blow         |        吹起号角：结合horn使用         |
-|       _sailor       |         丢下锚：定位日志问题          |
-|        debug        |             输出DEBUG信息             |
-|        info         |             输出INFO信息              |
-| notice,notification |            输出NOTICE信息             |
-|    warn,warning     |            输出WARNING信息            |
-|    error,iceberg    | 输出ERROR信息，默认带Trace Back Stack |
-|       welcome       |          使用脚本的欢迎信息           |
-|        step         |         [report]输出步骤信息          |
-|     before_sail     |        [report]脚本执行前信息         |
-|     after_sail      |        [report]脚本执行后信息         |
-|   report_capsize    |         [report]报告错误信息          |
-|   report_arrival    |         [report]报告成功信息          |
+|    Function Name    |                      Description                       |
+| :-----------------: | :----------------------------------------------------: |
+|    _sailor_time     |                        定位时间                        |
+|    _sailor_site     |                        定位位置                        |
+|    _sailor_level    |                        定位等级                        |
+|     _get_level      |                        获取等级                        |
+|    _weigh_anchor    |                     清除iceberg锚                      |
+|        horn         |                        标识信息                        |
+|        diary        |                  输出到文本，不到终端                  |
+|     clear_diary     |                        清除日志                        |
+|        call         |                   输出到文本以及终端                   |
+|        blow         |                 吹起号角：结合horn使用                 |
+|       _sailor       |                  丢下锚：定位日志问题                  |
+|        debug        |                     输出DEBUG信息                      |
+|        info         |                      输出INFO信息                      |
+| notice,notification |                     输出NOTICE信息                     |
+|    warn,warning     |                    输出WARNING信息                     |
+|    error,iceberg    |         输出ERROR信息，默认带Trace Back Stack          |
+|        wave         | 快速错误判断的函数，第一参数必须是$?，第二个参数为操作 |
+|       welcome       |                   使用脚本的欢迎信息                   |
+|        step         |                  [report]输出步骤信息                  |
+|     before_sail     |                 [report]脚本执行前信息                 |
+|     after_sail      |                 [report]脚本执行后信息                 |
+|   report_capsize    |                  [report]报告错误信息                  |
+|   report_arrival    |                  [report]报告成功信息                  |
 
 ## ⚓注意
 

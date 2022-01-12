@@ -180,19 +180,26 @@ function _sailor() {
     local msg="$(horn "$(_sailor_site "${anchor}")$(_sailor_level "${level}")") $*"
 
     local _sailor_printf=printf
+    local _sailor_tail=""
     local out=1
-    if [ "${level}" -ge "${SAILOR_STD_ERROR_LEVEL}" ]; then
+    if [ "${level}" -gt "${SAILOR_STD_ERROR_LEVEL}" ]; then
         out=2
         _sailor_printf=">&2 printf"
     fi
     # ^[[36m[2022/01/10 07:41:47][./sail.sh:6][NOTICE] Demo^[[m
     if [ "${SAILOR_COLOR}" = "always" ] || { test "${SAILOR_COLOR}" = "auto" && test -t ${out}; }; then
         [ -z "${ZSH_VERSION}" ] || emulate -L ksh
-        # eval "${_sailor_printf} \"\\e[${SAILOR_COLORS[$level]}m%s\\e[m\\n\"  \"$msg\""
-        # echo -e "\033[${SAILOR_COLORS[$level]}m${msg}\033[m" > 1.txt
-        blow ${SAILOR_COLORS[$level]} "${msg}"
+        if [ $out -eq 1 ]; then
+            blow ${SAILOR_COLORS[$level]} "${msg}"
+        else
+            eval "${_sailor_printf} \"\\e[${SAILOR_COLORS[$level]}m%s\\e[m\\n\"  \"$msg\""
+        fi
     else
-        eval "${_sailor_printf} \"%s\\n\" \"$msg\""
+        if [ $out -eq 1 ]; then
+            blow "${msg}"
+        else
+            eval "${_sailor_printf} \"%s\\n\" \"$msg\""
+        fi
     fi
 }
 
