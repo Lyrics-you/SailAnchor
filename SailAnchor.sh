@@ -8,11 +8,11 @@
 # 信息
 SHELL_NAME=${SHELL_NAME:-"SailAnchor.sh"}
 LOG_FILE=${LOG_FILE:-"anchors.log"}
-SAILOR_VERSION="v0.4.1"
+SAILOR_VERSION="v0.4.2"
 
 # 配置
 # 是否欢迎
-SAILOR_SHOW_WELCOME=${SAILOR_SHOW_WELCOME:-1}
+SAILOR_SHOW_WELCOME=${SAILOR_SHOW_WELCOME:-0}
 # 日期格式化
 SAILOR_DATE_FORMAT=${SAILOR_DATE_FORMAT:-'%Y/%m/%d %H:%M:%S'}
 # 0: debug, 1: info, 2: notice, 3: warning, 4: error
