@@ -59,6 +59,8 @@ fi
 
 或者使用快速判断函数`wave()`
 
+这里推荐一个使用方法，类似于：`./logger.sh > anchors.log  2>&1`
+
 ```shell
 #!/bin/bash
 

@@ -8,7 +8,7 @@
 # 信息
 SHELL_NAME=${SHELL_NAME:-"SailAnchor.sh"}
 LOG_FILE=${LOG_FILE:-"anchors.log"}
-SAILOR_VERSION="v0.4.0"
+SAILOR_VERSION="v0.4.1"
 
 # 配置
 # 是否欢迎
