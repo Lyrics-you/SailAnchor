@@ -101,6 +101,7 @@ wave $? your_command
 |    SAILOR_ERROR_COLOR    |           ERROR信息颜色            |                  31 (red)                   |
 |       SAILOR_COLOR       |         never/auto/always          |                    auto                     |
 |      SAILOR_LEVELS       |            5个等级名称             | ("DEBUG" "INFO" "NOTICE" "WARNING" "ERROR") |
+|   SAILOR_SHOW_WELCOME    |            是否显示欢迎            |                      1                      |
 |     SAILOR_SHOW_TIME     |            是否显示时间            |                      1                      |
 |     SAILOR_SHOW_FILE     |           是否显示问位置           |                      1                      |
 |    SAILOR_SHOW_LEVEL     |            是否显示等级            |                      1                      |
@@ -110,7 +111,7 @@ wave $? your_command
 |    GLOBAL_FAIL_ANCHOR    |         全局执行结果标志位         |                ./iceberg.anc                |
 |        SHELL_NAME        |           shell脚本名称            |                SailAnchor.sh                |
 |       ANCHOR_FILE        |              日志名称              |                 achors.log                  |
-|      SAILOR_VSRSION      |              版本信息              |                   v0.4.1                    |
+|      SAILOR_VSRSION      |              版本信息              |                   v0.5.0                    |
 
 ### ⚓颜色
 

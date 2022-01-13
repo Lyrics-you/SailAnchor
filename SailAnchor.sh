@@ -8,11 +8,9 @@
 # 信息
 SHELL_NAME=${SHELL_NAME:-"SailAnchor.sh"}
 LOG_FILE=${LOG_FILE:-"anchors.log"}
-SAILOR_VERSION="v0.4.2"
+SAILOR_VERSION="v0.5.0"
 
 # 配置
-# 是否欢迎
-SAILOR_SHOW_WELCOME=${SAILOR_SHOW_WELCOME:-0}
 # 日期格式化
 SAILOR_DATE_FORMAT=${SAILOR_DATE_FORMAT:-'%Y/%m/%d %H:%M:%S'}
 # 0: debug, 1: info, 2: notice, 3: warning, 4: error
@@ -42,6 +40,8 @@ SAILOR_COLORS=("$SAILOR_DEBUG_COLOR" "$SAILOR_INFO_COLOR" "$SAILOR_NOTICE_COLOR"
 SAILOR_ERROR_RETURN_CODE=${SAILOR_ERROR_RETURN_CODE:-100}
 
 # 开关
+# 是否欢迎
+SAILOR_SHOW_WELCOME=${SAILOR_SHOW_WELCOME:-1}
 # 是否显示时间
 SAILOR_SHOW_TIME=${SAILOR_SHOW_TIME:-1}
 # 是否显示PID : 默认不显示 同一个PID
@@ -129,6 +129,14 @@ function _get_level() {
         done
     fi
     printf $level
+}
+
+# _make_log_dir(): 创建日志目录
+function _make_log_dir() {
+    local log_dir="$(dirname ${LOG_FILE})"
+    if [ ! -d _make_log_dir ]; then
+        mkdir -p ${log_dir}
+    fi
 }
 
 # horm(): 标识信息
@@ -391,6 +399,8 @@ function report_arrival() {
     blow "$(horn "[REPORT][SUCCESS] ##  $1 SUCCESS  ##")"
 }
 
+# 开始时准备目录文件位置
+$(_make_log_dir)
 # 默认开始调用时清除iceberg锚
 $(_weigh_anchor)
 if [ "${SAILOR_SHOW_WELCOME}" -eq 1 ]; then
