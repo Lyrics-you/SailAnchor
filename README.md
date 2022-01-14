@@ -46,8 +46,7 @@ source ./SailAnchor.sh
 
 notice Sailing
 your_command
-ret=$?
-if [ ret = 0 ];then
+if [ $? = 0 ];then
   info Command downwind, succeeded.
 
 else
@@ -111,7 +110,7 @@ wave $? your_command
 |    GLOBAL_FAIL_ANCHOR    |         全局执行结果标志位         |                ./iceberg.anc                |
 |        SHELL_NAME        |           shell脚本名称            |                SailAnchor.sh                |
 |       ANCHOR_FILE        |              日志名称              |                 achors.log                  |
-|      SAILOR_VSRSION      |              版本信息              |                   v0.5.0                    |
+|      SAILOR_VSRSION      |              版本信息              |                   v0.5.1                    |
 
 ### ⚓颜色
 
@@ -150,31 +149,56 @@ SAILOR_ERROR_COLOR="37;41"
 
 
 
-|    Function Name    |                      Description                       |
-| :-----------------: | :----------------------------------------------------: |
-|    _sailor_time     |                        定位时间                        |
-|    _sailor_site     |                        定位位置                        |
-|    _sailor_level    |                        定位等级                        |
-|     _get_level      |                        获取等级                        |
-|    _weigh_anchor    |                     清除iceberg锚                      |
-|        horn         |                        标识信息                        |
-|        diary        |                  输出到文本，不到终端                  |
-|     clear_diary     |                        清除日志                        |
-|        call         |                   输出到文本以及终端                   |
-|        blow         |                 吹起号角：结合horn使用                 |
-|       _sailor       |                  丢下锚：定位日志问题                  |
-|        debug        |                     输出DEBUG信息                      |
-|        info         |                      输出INFO信息                      |
-| notice,notification |                     输出NOTICE信息                     |
-|    warn,warning     |                    输出WARNING信息                     |
-|    error,iceberg    |         输出ERROR信息，默认带Trace Back Stack          |
-|        wave         | 快速错误判断的函数，第一参数必须是$?，第二个参数为操作 |
-|       welcome       |            使用脚本的欢迎信息，包含版本信息            |
-|        step         |                  [report]输出步骤信息                  |
-|     before_sail     |                 [report]脚本执行前信息                 |
-|     after_sail      |                 [report]脚本执行后信息                 |
-|   report_capsize    |                  [report]报告错误信息                  |
-|   report_arrival    |                  [report]报告成功信息                  |
+|    Function Name    |                         Description                          |
+| :-----------------: | :----------------------------------------------------------: |
+|    _sailor_time     |                           定位时间                           |
+|    _sailor_site     |                           定位位置                           |
+|    _sailor_level    |                           定位等级                           |
+|     _get_level      |                           获取等级                           |
+|    _weigh_anchor    |                        清除iceberg锚                         |
+|        horn         |                           标识信息                           |
+|        diary        |                     输出到文本，不到终端                     |
+|     clear_diary     |                           清除日志                           |
+|        call         |                      输出到文本以及终端                      |
+|        blow         |                    吹起号角：结合horn使用                    |
+|       _sailor       |                     丢下锚：定位日志问题                     |
+|        debug        |                        输出DEBUG信息                         |
+|        info         |                         输出INFO信息                         |
+| notice,notification |                        输出NOTICE信息                        |
+|    warn,warning     |                       输出WARNING信息                        |
+|    error,iceberg    |            输出ERROR信息，默认带Trace Back Stack             |
+|        wave         |    快速错误判断的函数，第一参数必须是$?，第二个参数为操作    |
+|       welcome       |               使用脚本的欢迎信息，包含版本信息               |
+|        step         | [report]输出步骤信息。注意格式为：[数字] "步骤信息"或者"步骤信息"。使用数字时，可以使得后续步骤从此开始。 |
+|     before_sail     |                    [report]脚本执行前信息                    |
+|     after_sail      |                    [report]脚本执行后信息                    |
+|   report_capsize    |                     [report]报告错误信息                     |
+|   report_arrival    |                     [report]报告成功信息                     |
+
+## 函数使用示例
+
+基本函数可以使用如下：
+
+```shell
+debug "This is a debug"
+info "This is a info"
+notice "This is a notice"
+Warn "This is a Warn"
+error "This is a error"
+
+step 1 TestCommand1
+TestCommand
+wave $? "TestCommand"
+
+step TestCommand2
+if [ $? = 0 ];then
+  info Command downwind, succeeded.
+else
+  error Command capsize, failed!
+fi
+```
+
+
 
 ## ⚓注意
 

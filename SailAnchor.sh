@@ -2,13 +2,13 @@
 # * FileName: Shell Log Anchor
 # * Author: Leyuan Jia
 # * Email: Leyuan.Jia@outlook.com
-# * Date: 2022, Jua. 12th
+# * Date: 2022, Jua. 14th
 # * Copyright: No copyright. You can use this code for anything with no warranty.
 
 # 信息
 SHELL_NAME=${SHELL_NAME:-"SailAnchor.sh"}
 LOG_FILE=${LOG_FILE:-"anchors.log"}
-SAILOR_VERSION="v0.5.0"
+SAILOR_VERSION="v0.5.1"
 
 # 配置
 # 日期格式化
@@ -350,11 +350,19 @@ function welcome() {
 
 }
 
-# step(): 步骤打印函数：需要传入$1：步骤序号，$2：步骤描述
+# step(): 步骤打印函数：需要传入$1：步骤序号，$2：步骤描述。或者直接步骤描述(计数器记录)
 # 如： step 1 "Configure yum repos"
+#     step "Configure yum repos"
+_SAILOR_STEP=${_SAILOR_STEP:-0}
 function step() {
+    ((_SAILOR_STEP++))
     local sail_site=$(caller)
-    blow "$(horn "[REPORT][STEP] ==  ${sail_site##*/}  STEP $1 : $2  ==")"
+    if [ $# -eq 1 ]; then
+        blow "$(horn "[REPORT][STEP] ==  ${sail_site##*/}  STEP ${_SAILOR_STEP} : $1  ==")"
+    else
+        blow "$(horn "[REPORT][STEP] ==  ${sail_site##*/}  STEP $1 : $2  ==")"
+        _SAILOR_STEP=$1
+    fi
 }
 
 # before_sail(): 脚本执行前函数：在关键脚本开始时执行，调用时需要传入执行脚本的所有参数
