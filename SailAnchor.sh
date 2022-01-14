@@ -344,7 +344,7 @@ function wave() {
 # welcome(): 欢迎使用
 function welcome() {
     call "*********************************"
-    call "* Welcome to use ShellLogAnchor *"
+    call "* Welcome to use ${SHELL_NAME}  *"
     call "*    ${SHELL_NAME} : ${SAILOR_VERSION}     *"
     call "*********************************"
 
