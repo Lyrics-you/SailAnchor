@@ -8,7 +8,7 @@
 # 信息
 SHELL_NAME=${SHELL_NAME:-"SailAnchor.sh"}
 LOG_FILE=${LOG_FILE:-"anchors.log"}
-SAILOR_VERSION="v0.5.1"
+SAILOR_VERSION="v0.5.2"
 
 # 配置
 # 日期格式化
@@ -40,7 +40,7 @@ SAILOR_COLORS=("$SAILOR_DEBUG_COLOR" "$SAILOR_INFO_COLOR" "$SAILOR_NOTICE_COLOR"
 SAILOR_ERROR_RETURN_CODE=${SAILOR_ERROR_RETURN_CODE:-100}
 
 # 开关
-# 是否欢迎
+# 是否显示欢迎
 SAILOR_SHOW_WELCOME=${SAILOR_SHOW_WELCOME:-1}
 # 是否显示时间
 SAILOR_SHOW_TIME=${SAILOR_SHOW_TIME:-1}
@@ -413,4 +413,5 @@ $(_make_log_dir)
 $(_weigh_anchor)
 if [ "${SAILOR_SHOW_WELCOME}" -eq 1 ]; then
     welcome
+    SAILOR_SHOW_WELCOME=0
 fi
