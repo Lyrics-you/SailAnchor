@@ -109,7 +109,7 @@ wave $? your_command
 |    SAILOR_ERROR_TRACE    | 是否显示错误信息 `iceberg`/`error` |                      1                      |
 |    GLOBAL_FAIL_ANCHOR    |         全局执行结果标志位         |                ./iceberg.anc                |
 |        SHELL_NAME        |           shell脚本名称            |                SailAnchor.sh                |
-|       ANCHOR_FILE        |              日志名称              |                 achors.log                  |
+|       ANCHOR_FILE        |              日志名称              |                 anchors.log                 |
 |      SAILOR_VSRSION      |              版本信息              |                   v0.5.2                    |
 
 ### ⚓颜色
